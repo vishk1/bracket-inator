@@ -500,7 +500,7 @@ var R = {
   south:[['Florida','Prairie View'],['Clemson','Iowa'],['Vanderbilt','McNeese'],['Nebraska','Troy'],['North Carolina','VCU'],['Illinois','Penn'],['Saint Marys','Texas AM'],['Houston','Idaho']]
 };
 
-var MODE='leverage', POOL='small', CUR='full', USE_INJ=false;
+var MODE='leverage', POOL='small', CUR='full', USE_INJ=false, USE_CHAMP=false;
 var W={kenpom:50,leverage:30,upset:20};
 var INJ_MAP={};
 
@@ -513,6 +513,12 @@ function pick(nA,nB){
   if(!a||!b)return{winner:nA,loser:nB,prob:.5,lev:0,upset:false};
   var emA=a.adjEM-(INJ_MAP[nA]||0);
   var emB=b.adjEM-(INJ_MAP[nB]||0);
+  if(USE_CHAMP){
+    var champPenalty=4.0;
+    var aOk=a.adjO<=40&&a.adjD<=25,bOk=b.adjO<=40&&b.adjD<=25;
+    if(!aOk)emA-=champPenalty;
+    if(!bOk)emB-=champPenalty;
+  }
   var kpProb=wp(emA,emB);
   var rate=ur(a.seed,b.seed);
   var udogA=a.seed>b.seed;
@@ -838,8 +844,8 @@ document.getElementById('btn-rst').addEventListener('click',function(){
 });
 document.getElementById('inj-on').addEventListener('change',function(){USE_INJ=true; INJ_MAP=buildInjMap(true); go();});
 document.getElementById('inj-off').addEventListener('change',function(){USE_INJ=false;INJ_MAP={};               go();});
-document.getElementById('champ-on').addEventListener('change',function(){go();});
-document.getElementById('champ-off').addEventListener('change',function(){go();});
+document.getElementById('champ-on').addEventListener('change',function(){USE_CHAMP=true;  go();});
+document.getElementById('champ-off').addEventListener('change',function(){USE_CHAMP=false; go();});
 ['kenpom','leverage','upset'].forEach(function(k){
   document.getElementById('w-'+k).addEventListener('input',function(){
     W[k]=parseInt(this.value);
