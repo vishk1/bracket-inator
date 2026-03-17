@@ -201,7 +201,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     <div>
       <div class="logo"><div class="logo-mark">BE</div><span class="logo-txt">Bracket Engine v1</span></div>
       <h1>Game Theory<br><em>Bracket Model</em></h1>
-      <p class="sub">// KenPom &middot; Yahoo leverage &middot; Upset priors &middot; 2026 NCAA Tournament</p>
+      <p class="sub">// KenPom &middot; Yahoo leverage &middot; Upset priors &middot; 2026 NCAA Tournament <span id="info-icon" onmouseover="showInfoTip(event)" onmouseout="tipHide()" style="cursor:help;color:var(--accent);margin-left:4px">&#9432;</span></p>
     </div>
     <div class="mode-bar">
       <button class="mode-btn active" data-mode="chalk">Chalk</button>
@@ -769,6 +769,26 @@ function poolTipShow(e){
   el.style.left=(e.clientX+14)+'px';el.style.top=(e.clientY-10)+'px';
 }
 function tipHide(){document.getElementById('tip').style.display='none';}
+function showInfoTip(e){
+  var t=document.getElementById('tip');
+  t.innerHTML='<div class="tip-t">Model Math</div>'
+    +'<div style="margin-bottom:8px;color:var(--text);font-size:10px;line-height:1.5">'
+    +'<b>Win Probability:</b><br>Log5(AdjEM delta, k=11)<br><br>'
+    +'<b>Score = KenPom + Upset Factors</b><br>'
+    +'chalk = adjEM + roster + 3pct + TOM<br>'
+    +'leverage = +contrarian weight + Yahoo%<br>'
+    +'chaos = max upset weight + variance<br><br>'
+    +'<b>Upset Factors:</b><br>'
+    +'&bull; Roster (senior/junior): +4-7%<br>'
+    +'&bull; 3-point % diff: +1.5% per point<br>'
+    +'&bull; Turnover margin: +2% per TO gained<br>'
+    +'&bull; Historical seed rates: 9v8=51%, 12v5=35%<br><br>'
+    +'<b>Injury penalty:</b> -3.5 &times; severity<br>'
+    +'0.3-0.5 = role player, 0.6-0.8 = starter, 0.9-1.0 = star'
+    +'</div>';
+  t.style.display='block';
+  t.style.left=(e.clientX+14)+'px';t.style.top=(e.clientY-10)+'px';
+}
 
 // ─── EVENT WIRING ────────────────────────────────────────────────────
 document.querySelectorAll('.mode-btn').forEach(function(btn){
