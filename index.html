@@ -204,9 +204,10 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
       <p class="sub">// KenPom &middot; Yahoo leverage &middot; Upset priors &middot; 2026 NCAA Tournament <span id="info-icon" onmouseover="showInfoTip(event)" onmouseout="tipHide()" style="cursor:help;color:var(--accent);margin-left:4px">&#9432;</span></p>
     </div>
     <div class="mode-bar">
-      <button class="mode-btn active" data-mode="chalk">Chalk</button>
-      <button class="mode-btn" data-mode="leverage">Leverage</button>
+      <button class="mode-btn" data-mode="chalk">Chalk</button>
+      <button class="mode-btn active" data-mode="leverage">Leverage</button>
       <button class="mode-btn" data-mode="chaos">Chaos</button>
+      <span id="mode-info" onmouseover="showModeTip(event)" onmouseout="tipHide()" style="cursor:help;margin-left:10px;font-size:11px;color:var(--muted)">&#9432;</span>
     </div>
   </div>
 </header>
@@ -498,7 +499,7 @@ var R = {
   south:[['Florida','Prairie View'],['Clemson','Iowa'],['Vanderbilt','McNeese'],['Nebraska','Troy'],['North Carolina','VCU'],['Illinois','Penn'],['Saint Marys','Texas AM'],['Houston','Idaho']]
 };
 
-var MODE='chalk', POOL='small', CUR='full', USE_INJ=false;
+var MODE='leverage', POOL='small', CUR='full', USE_INJ=false;
 var W={kenpom:50,leverage:30,upset:20};
 var INJ_MAP={};
 
@@ -785,6 +786,24 @@ function showInfoTip(e){
     +'&bull; Historical seed rates: 9v8=51%, 12v5=35%<br><br>'
     +'<b>Injury penalty:</b> -3.5 &times; severity<br>'
     +'0.3-0.5 = role player, 0.6-0.8 = starter, 0.9-1.0 = star'
+    +'</div>';
+  t.style.display='block';
+  t.style.left=(e.clientX+14)+'px';t.style.top=(e.clientY-10)+'px';
+}
+function showModeTip(e){
+  var t=document.getElementById('tip');
+  t.innerHTML='<div class="tip-t">Mode Guide</div>'
+    +'<div style="margin-bottom:8px;color:var(--text);font-size:10px;line-height:1.5">'
+    +'<b style="color:var(--blue)">Chalk</b> — Favors higher seeds<br>'
+    +'Best for: Conservative picks, locking chalk<br>'
+    +'Lowest risk, lowest reward<br><br>'
+    +'<b style="color:var(--accent)">Leverage</b> — Middle ground<br>'
+    +'Uses Yahoo % to find contrarian edges<br>'
+    +'Best for: Pool play, balanced risk<br>'
+    +'Recommended for most users<br><br>'
+    +'<b style="color:var(--accent2)">Chaos</b> — Max upset weight<br>'
+    +'Prioritizes upsets & high-variance picks<br>'
+    +'Best for: GPPs, shooting for the moon'
     +'</div>';
   t.style.display='block';
   t.style.left=(e.clientX+14)+'px';t.style.top=(e.clientY-10)+'px';
