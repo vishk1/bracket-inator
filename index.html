@@ -535,13 +535,15 @@ function pick(nA,nB){
     sA=wk*baseA    +(udogA ?Math.max(0,uq)*wu*0.5:0);
     sB=wk*(1-baseA)+(!udogA?Math.max(0,uq)*wu*0.5:0);
   } else if(MODE==='leverage'){
-    var pm=POOL==='large'?1.5:POOL==='medium'?1.0:0.4;
-    sA=wk*baseA    +wl*(levA*pm+0.5)+(udogA ?wu*rate*0.8+wu*Math.max(0,uq)*0.4:0);
-    sB=wk*(1-baseA)+wl*(levB*pm+0.5)+(!udogA?wu*rate*0.8+wu*Math.max(0,uq)*0.4:0);
+    var pm=POOL==='large'?1.6:POOL==='medium'?1.1:0.5;
+    var wuSmooth=Math.pow(wu,1.5);
+    sA=wk*baseA*0.7+wl*(levA*pm+0.5)+(udogA ?wuSmooth*rate*0.8+wuSmooth*Math.max(0,uq)*0.4:0);
+    sB=wk*(1-baseA)*0.7+wl*(levB*pm+0.5)+(!udogA?wuSmooth*rate*0.8+wuSmooth*Math.max(0,uq)*0.4:0);
   } else {
     var kpBk=udogA&&a.kp<65;
-    sA=wk*baseA    +(udogA ?wu*rate*1.4+wu*Math.max(0,uq)*1.0+(kpBk?wu*0.2:0):0);
-    sB=wk*(1-baseA)+(!udogA?wu*rate*1.4+wu*Math.max(0,uq)*1.0+(!udogA&&b.kp<65?wu*0.2:0):0);
+    var wuSmooth=Math.pow(wu,1.3);
+    sA=wk*baseA*0.5+(udogA ?wuSmooth*rate*1.2+wuSmooth*Math.max(0,uq)*0.8+(kpBk?wuSmooth*0.2:0):0);
+    sB=wk*(1-baseA)*0.5+(!udogA?wuSmooth*rate*1.2+wuSmooth*Math.max(0,uq)*0.8+(!udogA&&b.kp<65?wuSmooth*0.2:0):0);
   }
   var aw=sA>=sB,winner=aw?nA:nB,loser=aw?nB:nA;
   return{winner:winner,loser:loser,prob:aw?baseA:1-baseA,lev:aw?levA:levB,upset:T[winner].seed>T[loser].seed};
